@@ -24,6 +24,7 @@ class Book(models.Model):
     pub_date = models.DateField(default="1983-06-01")
 
     def __str__(self):
+        # 此处必须返回字符串
         return self.title
 
 class Hero(models.Model):
