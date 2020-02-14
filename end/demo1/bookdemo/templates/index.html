@@ -7,6 +7,9 @@
 </head>
 <body>
     <div class="container">
+        <!--  这里是普通的注释        -->
+        {# 这里是django模板注释 #}
+
         <h1 class="center">这里是首页</h1>
         <div>
             <div class="center">
@@ -19,7 +22,9 @@
 
             <ul>
                 {% for book in books  %}
-                    <a href="/booktest/detail/{{book.id}}/"> <li>{{book.id}} -- {{book.title}} -- {{book.price}} -- {{book.pub_date}}</li>  </a>
+                    {# <a href="/detail/{{book.id}}/"> <li>{{book.id}} -- {{book.title}} -- {{book.price}} -- {{book.pub_date}}</li>  </a> #}
+
+                    <a href="{% url 'booktest:detail' book.id %}"> <li>{{book.id}} -- {{book.title}} -- {{book.price}} -- {{book.pub_date}}</li>  </a>
                 {% endfor %}
 
             </ul>

@@ -22,6 +22,7 @@ class Book(models.Model):
     title = models.CharField(max_length=20)
     price = models.FloatField(default=0)
     pub_date = models.DateField(default="1983-06-01")
+    author = models.CharField(max_length=20,default="zzy")
 
     def __str__(self):
         # 此处必须返回字符串
