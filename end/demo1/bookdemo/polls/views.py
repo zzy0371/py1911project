@@ -1,16 +1,27 @@
 from django.shortcuts import render,redirect,reverse
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse,FileResponse
 from .models import *
 # Create your views here.
-from django.views.generic import View,TemplateView,ListView,CreateView,DeleteView,UpdateView,DetailView
+from django.views.generic import View,TemplateView,ListView,CreateView,DeleteView,UpdateView,DetailView as DV
 # View类为所有的视图响应类的父类
 
 
 def index(request):
+    print("====================")
+    print(request.GET.get("hobbys"))
+    print(request.GET.getlist("hobbys"))
+    # print(request.META.get('HTTP_X_REQUESTED_WITH'))
+    # print(dir(request))
+
+
     questions = Question.objects.all()
     # 使用render发起一次请求
     return render(request,'polls/index.html',{"questions":questions})
     # return HttpResponse("首页")
+    # return JsonResponse({"name":"zzy"})
+
+    # return FileResponse(open("static/img/公众号.jpg","rb"),content_type="image/png",filename="aa.png",as_attachment=True)
+
 
 # 基于CBV的形式实现首页
 class IndexView(ListView):
@@ -26,11 +37,6 @@ class IndexView(ListView):
     # template_name = "polls/index.html"
     # def get_context_data(self, **kwargs):
     #     return {"questions":Question.objects.all()}
-
-
-
-
-
 def detail(request, qid):
     print(qid, "+++")
     if request.method == "GET":
@@ -64,13 +70,41 @@ def detail(request, qid):
 
         except:
             return HttpResponse("选项不合法")
-
-
-
     # return HttpResponse("详情页"+qid)
 
-class DetailView(DetailView):
-    template_name = "polls/index.html"
+class DetailView(View):
+    def get(self,request,qid):
+        try:
+            question = Question.objects.get(id=qid)
+            print(question, "--")
+            # 使用render发起一起请求
+            return render(request, 'polls/detail.html', {"question": question})
+
+        except Exception as e:
+            print(e)
+            return HttpResponse("问题不合法")
+    def post(self,request,qid):
+        choiceid = request.POST.get("num")
+        try:
+            choice = Choices.objects.get(id=choiceid)
+            choice.votes += 1
+            choice.save()
+            # 返回当前投票问题的投票结果页
+            url = reverse("polls:result", args=(qid,))
+            # 投票成功 返回投票结果
+
+            # redirect其实没有真正的返回内容   而是让浏览器重新请求一个地址
+            # 不能反复刷新post的结果
+            # question = Question.objects.get(id=qid)
+            # 错误的结局  刷新页面导致数据出错
+            # return render(request,'polls/result.html',{"question":question})
+            return redirect(to=url)
+            # return HttpResponse("投票成功了")  #接受了详情页的post请求
+            # return HttpResponse("现在我代替你进入到了投票结果页")  # 接受了结果页的get请求
+
+        except Exception as e:
+            print(e)
+            return HttpResponse("选项不合法")
 
 def result(request,qid):
 
@@ -80,3 +114,17 @@ def result(request,qid):
     except Exception as e:
         print(e)
         return HttpResponse("问题不合法")
+
+class ResultView(View):
+    # 方法一 继承View
+    def get(self,request,qid):
+        try:
+            question = Question.objects.get(id=qid)
+            return render(request, 'polls/result.html', {"question": question})
+        except Exception as e:
+            print(e)
+            return HttpResponse("问题不合法")
+
+
+
+

@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-
+# 使用媒体资源
+from django.views.static import serve
 # 路由 网址  每一个网址均需要绑定视图函数  视图函数给与页面返回
 # 每一个路由都需要和视图函数绑定
 # MVT  V视图函数   3个作用 接受请求   处理数据   返回响应
@@ -23,15 +24,13 @@ from django.urls import path,include
 
 # 可以实现一个路由分流
 urlpatterns = [
-
-
-
     path('admin/', admin.site.urls),
 
     # 1,使用path将booktest的路由 进行包含
     # path('booktest/', include('booktest.urls'))
 
     path('polls/',include('polls.urls',namespace='polls')),
+    path('download/',include('download.urls',namespace='download')),
     path('', include('booktest.urls',namespace='booktest')),
 
 

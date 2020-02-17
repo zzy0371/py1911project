@@ -28,8 +28,10 @@ SECRET_KEY = 'hlhevm04z#h9t2!b3d4utw%2rad50l%gv0iequ23t(!7!&%3m9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
+# 只有关掉调试模式才能显示404 之类的错误  上线之后设置False
+# DEBUG = False
+# 如果DEBUG设置为False  ALLOWED_HOSTS代表那些域名ip电脑可以访问服务
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -44,6 +46,7 @@ INSTALLED_APPS = [
     # 想要使用应用中的模型类  需要注册该应用
     'booktest',
     'polls',
+    'download'
 ]
 
 MIDDLEWARE = [
@@ -133,3 +136,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 # 需要配置静态文件所处位置
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'static')]
+
