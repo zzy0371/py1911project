@@ -57,6 +57,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# 跟配置  指明项目总的路由配置文件
 ROOT_URLCONF = 'bookdemo.urls'
 
 TEMPLATES = [
