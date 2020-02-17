@@ -30,6 +30,8 @@ urlpatterns = [
 
     # 1,使用path将booktest的路由 进行包含
     # path('booktest/', include('booktest.urls'))
+
+    path('polls/',include('polls.urls',namespace='polls')),
     path('', include('booktest.urls',namespace='booktest')),
 
 
