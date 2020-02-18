@@ -65,11 +65,8 @@ def detail(request, qid):
             except Exception as e:
                 print(e,"-----")
 
-
-
-
         else:
-            url = reverse("polls:login")
+            url = reverse("polls:login")+"?next=/polls/detail/"+qid+"/"
             return redirect(to=url)
     elif request.method == "POST":
         choiceid = request.POST.get("num")
@@ -161,7 +158,12 @@ def login(request):
         # 调用django登录方法  其实是为了生成cookie
         if user:
             lin(request, user)
-            url = reverse("polls:index")
+            next = request.GET.get("next")
+            print("取得next参数为",next)
+            if next:
+                url = next
+            else:
+                url = reverse("polls:index")
             return redirect(to=url)
         else:
             url = reverse("polls:login")
