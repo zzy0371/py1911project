@@ -54,7 +54,8 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     # csrf验证需要先关闭 否则 443 forbiden
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    # 这个中间件可以检测是否携带csrf_token信息  用于post检测
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -65,6 +66,7 @@ ROOT_URLCONF = 'bookdemo.urls'
 
 TEMPLATES = [
     {
+        # 指明模板使用的翻译引擎 ：将django模板转换为最终的html
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         # 在dirs中配置自己的模板目录
         'DIRS': [os.path.join(BASE_DIR,'templates')],
@@ -137,3 +139,5 @@ STATIC_URL = '/static/'
 # 需要配置静态文件所处位置
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'static')]
 
+# 使用自定义的用户类作为django的认证类需要使用配置
+AUTH_USER_MODEL = 'polls.User'

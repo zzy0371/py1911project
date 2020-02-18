@@ -19,9 +19,9 @@ def index(request):
     # result = template.render(context)
     # 3将渲染结果使用httpresponse返回
     # return HttpResponse(result)
-
+    smallbook = Book.objects.filter(id__gt=100)
     # 3合1
-    return render(request,'index.html',{"books":books})
+    return render(request,'index.html',{"books":books,"smallbook":smallbook,"name1":"zzy<h3>三级标题</h3>"})
 
 def detail(request,bookid):
     # return HttpResponse("这里是详情页"+bookid)

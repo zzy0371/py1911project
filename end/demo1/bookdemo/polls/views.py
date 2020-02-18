@@ -4,6 +4,7 @@ from .models import *
 # Create your views here.
 from django.views.generic import View,TemplateView,ListView,CreateView,DeleteView,UpdateView,DetailView as DV
 # View类为所有的视图响应类的父类
+from django.contrib.auth import authenticate,login as lin,logout as lot
 
 
 def index(request):
@@ -126,5 +127,49 @@ class ResultView(View):
             return HttpResponse("问题不合法")
 
 
+def login(request):
+    if request.method == "GET":
+        return render(request,'polls/login.html')
+    elif request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        # 可以使用django自带的用户认证系统  认证成功返回用户 失败返回None
+        user = authenticate(username=username,password=password)
+        # 调用django登录方法  其实是为了生成cookie
+        if user:
+            lin(request, user)
+            url = reverse("polls:index")
+            return redirect(to=url)
+        else:
+            url = reverse("polls:login")
+            return redirect(to=url)
+
+def regist(request):
+    if request.method == "GET":
+        return render(request,'polls/regist.html')
+    else:
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        password2 = request.POST.get("password2")
+        if User.objects.filter(username=username).count()>0:
+            return HttpResponse("用户名已存在")
+        else:
+            if password == password2:
+                User.objects.create_user(username=username, password=password)
+                url = reverse("polls:login")
+                return redirect(to=url)
+            else:
+                return HttpResponse("密码不一致")
+
+
+
+
+
+
+def logout(request):
+    # 调用django的登出方法 目的是为了删除cookie
+    lot(request)
+    url = reverse("polls:index")
+    return redirect(to=url)
 
 

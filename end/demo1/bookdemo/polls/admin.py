@@ -19,6 +19,8 @@ class ChoiceAdmin(admin.ModelAdmin):
 admin.site.register(Question,QuestionAdmin)
 admin.site.register(Choices,ChoiceAdmin)
 
+admin.site.register(User)
+
 """
 admin 给后台管理使用
 admin.site.register(Question)   # 管理员可以看到模型类

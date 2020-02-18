@@ -1,6 +1,14 @@
 from django.db import models
-
 # Create your models here.
+# 使用django自带的用户系统
+from django.contrib.auth.models import AbstractUser
+
+class User(AbstractUser):
+    """
+    自定义用户类继承django自带用户系统
+    """
+    telephone = models.CharField(max_length=20,verbose_name="手机号")
+    questions = models.ManyToManyField('Question')
 
 class Question(models.Model):
     """
@@ -9,6 +17,7 @@ class Question(models.Model):
     title = models.CharField(max_length=50, verbose_name="投票问题")
     create_time = models.DateTimeField(auto_now_add=True,verbose_name="创建时间")
 
+
     def __str__(self):
         return self.title
 
@@ -16,8 +25,6 @@ class Question(models.Model):
         verbose_name = "投票表"
         verbose_name_plural = verbose_name
         ordering = ["-create_time"]
-
-
 
 class Choices(models.Model):
     """
