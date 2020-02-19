@@ -3,7 +3,7 @@
     注册
 {% endblock %}
 {% block body %}
-    {% comment %}
+
     <form action="#" method="post">
         {% csrf_token %}
         用户名: <input type="text" name="username" required>
@@ -17,8 +17,8 @@
         <p>{{errors}}</p>
     </form>
 
-    {% endcomment %}
 
+ {% comment %}
 
 <form action="#" method="post">
 {% csrf_token %}
@@ -34,4 +34,5 @@
     <br>
     <input type="submit" value="注册">
 </form>
+  {% endcomment %}
 {% endblock %}

@@ -185,33 +185,48 @@ def regist(request):
     if request.method == "GET":
 
         # 3使用模型表单类
-        rf = RegistForm()
-        return render(request,'polls/regist.html',{"rf":rf})
+        # rf = RegistForm()
+        # return render(request,'polls/regist.html',{"rf":rf})
         # 1使用html标签生成表单
-        # return render(request,'polls/regist.html')
+        return render(request,'polls/regist.html')
     else:
-        rf = RegistForm(request.POST)
-        if rf.is_valid():
-            print(rf,"++",rf.cleaned_data["username"])
-
-
-            username = rf.cleaned_data["username"]
-            password = rf.cleaned_data["password"]
-            password2 = rf.cleaned_data["password2"]
-            if User.objects.filter(username=username).count()>0:
-                # return HttpResponse("用户名已存在")
-                return render(request, 'polls/regist.html',{"errors":"用户名已存在"})
-            else:
-                if password == password2:
-                    # User.objects.create_user(username=username, password=password)
-                    rf.save()
-                    url = reverse("polls:login")
-                    return redirect(to=url)
-                else:
-                    return render(request, 'polls/regist.html', {"errors": "密码不一致"})
-                    # return HttpResponse("密码不一致")
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        password2 = request.POST.get("password2")
+        if User.objects.filter(username=username).count() > 0:
+            # return HttpResponse("用户名已存在")
+            return render(request, 'polls/regist.html', {"errors": "用户名已存在"})
         else:
-            return HttpResponse("未知错误")
+            if password == password2:
+                User.objects.create_user(username=username, password=password)
+                url = reverse("polls:login")
+                return redirect(to=url)
+            else:
+                return render(request, 'polls/regist.html', {"errors": "密码不一致"})
+                # return HttpResponse("密码不一致")
+
+        # rf = RegistForm(request.POST)
+        # if rf.is_valid():
+        #     print(rf,"++",rf.cleaned_data["username"])
+        #
+        #
+        #     username = rf.cleaned_data["username"]
+        #     password = rf.cleaned_data["password"]
+        #     password2 = rf.cleaned_data["password2"]
+        #     if User.objects.filter(username=username).count()>0:
+        #         # return HttpResponse("用户名已存在")
+        #         return render(request, 'polls/regist.html',{"errors":"用户名已存在"})
+        #     else:
+        #         if password == password2:
+        #             # User.objects.create_user(username=username, password=password)
+        #             rf.save()
+        #             url = reverse("polls:login")
+        #             return redirect(to=url)
+        #         else:
+        #             return render(request, 'polls/regist.html', {"errors": "密码不一致"})
+        #             # return HttpResponse("密码不一致")
+        # else:
+        #     return HttpResponse("未知错误")
 
 
 
