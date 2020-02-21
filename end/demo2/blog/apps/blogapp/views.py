@@ -23,14 +23,30 @@ from .models import *
 
 def index(request):
     ads = Ads.objects.all()
-    articles = Article.objects.all()
+
+    # 定义当前页面是 首页 分类  归档 参数
+    typepage = request.GET.get("type")
+    print("当前页面类型为",typepage)
+
+    year = None
+    month = None
+    if typepage == "date":
+        year = request.GET.get("year")
+        month = request.GET.get("month")
+        articles = Article.objects.filter(create_time__year = year, create_time__month=month ).order_by("-create_time")
+    else:
+
+        articles = Article.objects.all().order_by("-create_time")
+
+
     # locals可以返回作用域局部变量
     # print(locals())
     paginator = Paginator(articles,2)
     # 获取get请求中的页码参数  默认为1
     num = request.GET.get("pagenum",1)
     page = paginator.get_page(num)
-    return render(request,'index.html',  {"ads":ads, "page":page} )
+    return render(request, 'index.html', locals())
+    # return render(request,'index.html',  {"ads":ads, "page":page, "type":typepage, "year":year,"month":month} )
     # return HttpResponse("首页")
     # return re
 
