@@ -1,4 +1,5 @@
 {% extends 'base2.html' %}
+{% load myfun %}
 {% block title %}
     博客实战首页
 {% endblock %}
@@ -74,14 +75,14 @@
                         <div class="entry-meta">
                             <span class="post-category"><a href="#">{{a.category.name}}</a></span>
                             <span class="post-date"><a href="#"><time class="entry-date"
-                                                                      datetime="2012-11-09T23:15:57+00:00">{{a.create_time}}</time></a></span>
-                            <span class="post-author"><a href="#">{{a.author}}</a></span>
+                                                                      datetime="2012-11-09T23:15:57+00:00">{{a.create_time|dateFormat}}</time></a></span>
+                            <span class="post-author"><a href="#">{{a.author|authorFormat:"作者"}}</a></span>
                             <span class="comments-link"><a href="#">{{a.comment_set.count}} 评论</a></span>
                             <span class="views-count"><a href="#">{{a.views}} 阅读</a></span>
                         </div>
                     </header>
                     <div class="entry-content clearfix">
-                        <p>{{a.body|safe}}</p>
+                        <p>{{a.body|safe|truncatechars_html:'5'}}</p>
                         <div class="read-more cl-effect-14">
                             <a href="{% url 'blogapp:detail' a.id %}" class="more-link">继续阅读 <span class="meta-nav">→</span></a>
                         </div>
