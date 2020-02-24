@@ -1,20 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>搜索结果页面</title>
-</head>
-<body>
-        {% if query %}
+{% extends 'base.html' %}
+{% block main %}
+     {% if query %}
             <h3>搜索结果如下：</h3>
             {% for result in page.object_list %}
-                <a href="#">  {{result.object.title}} </a><br/>
+<!--                <a href="#">  {{result.object.title}} </a><br/>-->
+                <article class="post post-1">
+								                    <header class="entry-header">
+								                        <h1 class="entry-title">
+								                            <a href="{% url 'blogapp:detail' result.object.id %}">{{result.object.title}}</a>
+								                        </h1>
+								                        <div class="entry-meta">
+								                            <span class="post-category"><a href="#">{{result.object.category}}</a></span>
+								                            <span class="post-date"><a href="#"><time class="entry-date"
+								                                                                      datetime="2012-11-09T23:15:57+00:00">{{result.object.pub_date}}</time></a></span>
+								                            <span class="post-author"><a href="#">{{result.object.author}}</a></span>
+								                            <span class="comments-link"><a href="#">{{result.object.comment_set.count}} 评论</a></span>
+								                            <span class="views-count"><a href="#">{{result.object.views}} 阅读</a></span>
+								                        </div>
+								                    </header>
+								                    <div class="entry-content clearfix">
+								                        <p>{{a.body|safe|truncatechars_html:'5'}}</p>
+								                        <div class="read-more cl-effect-14">
+								                            <a href="#" class="more-link">继续阅读 <span class="meta-nav">→</span></a>
+								                        </div>
+								                    </div>
+				</article>
             {% empty %}
                 <p>啥也没找到</p>
             {% endfor %}
+
+
          {% endif %}</body>
 
-
-
-</body>
-</html>
+{% endblock %}
