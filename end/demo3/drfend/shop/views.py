@@ -10,7 +10,11 @@ class CategoryViewSets(viewsets.ModelViewSet):
     serializer_class 指明序列化类
     """
     queryset = Category.objects.all()
-    serializer_class = CategorySerizlizer
+    # 1通过属性指明
+    # serializer_class = CategorySerizlizer
+    # 2通过方法指明
+    def get_serializer_class(self):
+        return CategorySerizlizer
 
 class GoodViewSets(viewsets.ModelViewSet):
     queryset = Good.objects.all()
