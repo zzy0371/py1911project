@@ -15,6 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from django.conf.urls import url
+from django.views.static import serve
+from .settings import MEDIA_ROOT
 from shop.views import *
 
 # 引入API文档路由
@@ -27,9 +30,12 @@ router = routers.DefaultRouter()
 # 可以通过router默认路由注册资源
 router.register('categorys',CategoryViewSets)
 router.register('goods',GoodViewSets)
+router.register('goodimgs',GoodImgsViewSets)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # url(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
+    url('media/(?P<path>.*)',serve, {'document_root': MEDIA_ROOT}),
     # 配置RestFulAPI
     path('api/v1/',include(router.urls)),
     # API文档地址

@@ -65,12 +65,49 @@ class CategorySerizlizer(serializers.Serializer):
         return instance
 
 
+class GoodImgsSerializer(serializers.Serializer):
+    img = serializers.ImageField()
+    good = serializers.CharField(source='good.name')
+
+    # def validate_good(self, data):
+    #     print("原始值",data)
+    #     try:
+    #         g = Good.objects.get(name = data)
+    #         print(g,type(g),"+++")
+    #         return g
+    #     except:
+    #         raise serializers.ValidationError("输入的商品不存在")
+    #     # return data
+
+    def validate(self, attrs):
+        print("原始值",attrs["good"]["name"])
+        try:
+            g = Good.objects.get(name = attrs["good"]["name"])
+            print("修改商品",g)
+            attrs["good"] = g
+        except:
+            raise serializers.ValidationError("商品不存在")
+        return attrs
+
+    def create(self, validated_data):
+        print(validated_data)
+        instance = GoodImgs.objects.create(**validated_data)
+        return instance
+    def update(self, instance, validated_data):
+        instance.img = validated_data.get("img",instance.img)
+        instance.good = validated_data.get("good",instance.good)
+        instance.save()
+        return instance
+
+
+
 class GoodSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=20,min_length=2,error_messages={
         "max_length":"最多20个字",
         "min_length":"最少2个字"
     })
     category = CategorySerizlizer(label="分类")
+    imgs = GoodImgsSerializer(label="图片",many=True,read_only=True)
 
     def validate_category(self, category):
         """
@@ -102,6 +139,13 @@ class GoodSerializer(serializers.Serializer):
         instance = Good.objects.create(**validated_data)  # name=    category=
         return instance
 
+    def update(self, instance, validated_data):
+        print("原始值",instance.name,instance.category)
+        instance.name = validated_data.get("name",instance.name)
+        instance.category = validated_data.get("category",instance.category)
+        instance.save()
+        return instance
+
 
 class CategorySerizlizer1(serializers.ModelSerializer):
     # goods 一定要和 related_name 的值一致
@@ -130,5 +174,7 @@ class CategorySerizlizer1(serializers.ModelSerializer):
 
         # fields 指明序列化哪些字段
         fields = ('id','name','goods')
+
+
 
 
