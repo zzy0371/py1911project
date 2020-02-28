@@ -37,7 +37,13 @@ urlpatterns = [
     # url(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
     url('media/(?P<path>.*)',serve, {'document_root': MEDIA_ROOT}),
     # 配置RestFulAPI
-    path('api/v1/',include(router.urls)),
+    # path('api/v1/',include(router.urls)),
+
+    url(r'^categorylist/$',categoryList,name='categorylist'),
+    url(r'^categorydetail/(\d+)/$',categoryDetail,name='categorydetail'),
+
+
+
     # API文档地址
     path('api/v1/docs/',include_docs_urls(title="RestFulAPI",description="RestFulAPI v1")),
     # 为了在DRF路由调试界面能够使用用户相关功能需要引入以下路由
