@@ -13,9 +13,49 @@ from django.shortcuts import get_object_or_404
 
 from django.views import View
 from rest_framework.views import APIView
+from rest_framework import generics
+from rest_framework import mixins
 
 
-class CategoryListView(APIView):
+
+
+
+class CategoryListView2(generics.GenericAPIView,mixins.ListModelMixin,mixins.CreateModelMixin):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerizlizer
+
+    def get(self,request):
+        return self.list(request)
+    def post(self,request):
+        return self.create(request)
+
+
+
+
+
+class CategoryDetailView2(generics.GenericAPIView,mixins.RetrieveModelMixin,mixins.UpdateModelMixin,mixins.DestroyModelMixin):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerizlizer
+
+    def get(self,request,pk):
+        return self.retrieve(request,pk)
+
+    def put(self,request,pk):
+        return self.update(request,pk)
+
+    def patch(self,request,pk):
+        return self.update(request,pk)
+
+    def delete(self,request,pk):
+        return self.delete(request,pk)
+
+
+
+
+
+
+
+class CategoryListView1(APIView):
     """
     1继承Django自带的View类需要重写对应的http方法
     2继承DRF自带的APIView类即可完成请求响应的封装  APIView继承封装了Django的View
@@ -39,7 +79,7 @@ class CategoryListView(APIView):
         return Response(seria.data,status=status.HTTP_201_CREATED)
 
 
-class CategoryDetailView(APIView):
+class CategoryDetailView1(APIView):
     def get(self,request,cid):
         seria = CategorySerizlizer(instance=get_object_or_404(Category,pk=cid))
         return Response(seria.data,status=status.HTTP_200_OK)
@@ -102,6 +142,20 @@ def categoryDetail(request,cid):
 
 
 
+class CategoryListView(generics.ListCreateAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerizlizer
+
+class CategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerizlizer
+
+
+class CategoryViewSets2(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerizlizer
+
+
 
 class CategoryViewSets(viewsets.ModelViewSet):
     """
@@ -112,10 +166,10 @@ class CategoryViewSets(viewsets.ModelViewSet):
     """
     queryset = Category.objects.all()
     # 1通过属性指明
-    # serializer_class = CategorySerizlizer
+    serializer_class = CategorySerizlizer
     # 2通过方法指明
-    def get_serializer_class(self):
-        return CategorySerizlizer
+    # def get_serializer_class(self):
+    #     return CategorySerizlizer
 
 class GoodViewSets(viewsets.ModelViewSet):
     queryset = Good.objects.all()

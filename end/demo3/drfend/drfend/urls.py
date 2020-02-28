@@ -28,7 +28,7 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 
 # 可以通过router默认路由注册资源
-router.register('categorys',CategoryViewSets)
+router.register('categorys',CategoryViewSets2)
 router.register('goods',GoodViewSets)
 router.register('goodimgs',GoodImgsViewSets)
 
@@ -37,13 +37,20 @@ urlpatterns = [
     # url(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
     url('media/(?P<path>.*)',serve, {'document_root': MEDIA_ROOT}),
     # 配置RestFulAPI
-    # path('api/v1/',include(router.urls)),
+    path('api/v1/',include(router.urls)),
 
     # url(r'^categorylist/$',categoryList,name='categorylist'),
     # url(r'^categorydetail/(\d+)/$',categoryDetail,name='categorydetail'),
 
-    url(r'^categorylist/$',CategoryListView.as_view(),name='categorylist'),
-    url(r'^categorydetail/(\d+)/$',CategoryDetailView.as_view(),name='categorydetail'),
+    # url 第二个参数本该是函数的引用 此处为何是函数的地址  此处as_view()  返回值其实是另外一个函数的引用(闭包)
+    # url(r'^categorylist/$',CategoryListView.as_view(),name='categorylist'),
+    # url(r'^categorydetail/(\d+)/$',CategoryDetailView.as_view(),name='categorydetail'),
+
+    # url(r'^categorylist/$',CategoryListView.as_view(),name='categorylist'),
+    # url(r'^categorydetail/(?P<pk>\d+)/$',CategoryDetailView.as_view(),name='categorydetail'),
+
+    # url(r'^categorys/$',CategoryViewSets2.as_view({'get':'list','post':'create'})),
+    # url(r'^categorys/(?P<pk>\d+)/$',CategoryViewSets2.as_view({'get':'retrieve','put':'update','patch':'update','delete':'destroy'})),
 
     # API文档地址
     path('api/v1/docs/',include_docs_urls(title="RestFulAPI",description="RestFulAPI v1")),
