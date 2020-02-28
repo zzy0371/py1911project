@@ -12,26 +12,54 @@ from django.shortcuts import get_object_or_404
 
 
 from django.views import View
+from rest_framework.views import APIView
 
-class CategoryListView(View):
+
+class CategoryListView(APIView):
     """
-    继承Django自带的View类需要重写对应的http方法
+    1继承Django自带的View类需要重写对应的http方法
+    2继承DRF自带的APIView类即可完成请求响应的封装  APIView继承封装了Django的View
     """
     def get(self,request):
-        return HttpResponse("返回列表成功")
+        # instance从数据库取
+        seria = CategorySerizlizer(instance=Category.objects.all(),many=True)
+        return Response(seria.data,status=status.HTTP_200_OK)
 
     def post(self,request):
-        return HttpResponse("创建成功")
+        # data从请求中取
+        seria = CategorySerizlizer(data=request.data)
+        # if seria.is_valid():
+        #     seria.save()
+        #     return Response(seria.data,status=status.HTTP_201_CREATED)
+        # else:
+        #     return Response(seria.errors,status=status.HTTP_400_BAD_REQUEST)
 
-class CategoryDetailView(View):
+        seria.is_valid(raise_exception=True)
+        seria.save()
+        return Response(seria.data,status=status.HTTP_201_CREATED)
+
+
+class CategoryDetailView(APIView):
     def get(self,request,cid):
-        return HttpResponse("返回单个对象")
+        seria = CategorySerizlizer(instance=get_object_or_404(Category,pk=cid))
+        return Response(seria.data,status=status.HTTP_200_OK)
     def put(self,request,cid):
-        return HttpResponse("修改成功过put")
+        seria = CategorySerizlizer(instance=get_object_or_404(Category,pk=cid),data=request.data)
+        if seria.is_valid():
+            seria.save()
+            return Response(seria.data,status=status.HTTP_200_OK)
+        else:
+            return Response(seria.errors,status=status.HTTP_200_OK)
     def patch(self,request,cid):
-        return HttpResponse("修改成功过patch")
+        seria = CategorySerizlizer(instance=get_object_or_404(Category, pk=cid), data=request.data)
+        if seria.is_valid():
+            seria.save()
+            return Response(seria.data, status=status.HTTP_200_OK)
+        else:
+            return Response(seria.errors, status=status.HTTP_200_OK)
     def delete(self,request,cid):
-        return HttpResponse("删除成功")
+        get_object_or_404(Category,pk=cid).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 
