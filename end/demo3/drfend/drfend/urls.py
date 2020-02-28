@@ -39,10 +39,11 @@ urlpatterns = [
     # 配置RestFulAPI
     # path('api/v1/',include(router.urls)),
 
-    url(r'^categorylist/$',categoryList,name='categorylist'),
-    url(r'^categorydetail/(\d+)/$',categoryDetail,name='categorydetail'),
+    # url(r'^categorylist/$',categoryList,name='categorylist'),
+    # url(r'^categorydetail/(\d+)/$',categoryDetail,name='categorydetail'),
 
-
+    url(r'^categorylist/$',CategoryListView.as_view(),name='categorylist'),
+    url(r'^categorydetail/(\d+)/$',CategoryDetailView.as_view(),name='categorydetail'),
 
     # API文档地址
     path('api/v1/docs/',include_docs_urls(title="RestFulAPI",description="RestFulAPI v1")),

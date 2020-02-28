@@ -10,6 +10,31 @@ from rest_framework import status
 
 from django.shortcuts import get_object_or_404
 
+
+from django.views import View
+
+class CategoryListView(View):
+    """
+    继承Django自带的View类需要重写对应的http方法
+    """
+    def get(self,request):
+        return HttpResponse("返回列表成功")
+
+    def post(self,request):
+        return HttpResponse("创建成功")
+
+class CategoryDetailView(View):
+    def get(self,request,cid):
+        return HttpResponse("返回单个对象")
+    def put(self,request,cid):
+        return HttpResponse("修改成功过put")
+    def patch(self,request,cid):
+        return HttpResponse("修改成功过patch")
+    def delete(self,request,cid):
+        return HttpResponse("删除成功")
+
+
+
 @api_view(['GET','POST'])
 def categoryList(request):
     if request.method == "GET":
