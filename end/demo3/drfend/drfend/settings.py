@@ -136,3 +136,4 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.AutoSchema',
 }
 
+AUTH_USER_MODEL = 'shop.User'

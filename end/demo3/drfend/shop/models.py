@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import AbstractUser
 # Create your models here.
 class Category(models.Model):
     name = models.CharField(max_length=20,verbose_name="分类名")
@@ -22,4 +22,11 @@ class GoodImgs(models.Model):
 
     def __str__(self):
         return self.good.name
+
+class User(AbstractUser):
+    telephone = models.CharField(max_length=11,verbose_name="手机号")
+
+class Order(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE,verbose_name="用户")
+    goods = models.ManyToManyField(Good,verbose_name="商品")
 

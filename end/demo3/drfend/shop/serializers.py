@@ -176,5 +176,42 @@ class CategorySerizlizer1(serializers.ModelSerializer):
         fields = ('id','name','goods')
 
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = "__all__"
+
+    def validate(self, attrs):
+        print("原生创建")
+        return attrs
+
+
+class UserRegistSerializer(serializers.Serializer):
+    username = serializers.CharField(max_length=10,min_length=3)
+    password = serializers.CharField(max_length=10,min_length=3)
+    password2 = serializers.CharField(max_length=10, min_length=3)
+
+    # def validate_password2(self, data):
+    #     print("---")
+    #     print(self.password)
+    #     print("+++")
+    #     if data != self.password:
+    #         raise serializers.ValidationError("密码不一致")
+    #     else:
+    #         return data
+
+    def validate(self, attrs):
+        if attrs["password"] != attrs["password2"]:
+            raise serializers.ValidationError("密码不一致")
+
+        del attrs["password2"]
+        return attrs
+
+
+    def create(self, validated_data):
+        print("提交数据",validated_data)
+        return User.objects.create_user(username=validated_data.get("username"),email=validated_data.get("email"),password=validated_data.get("password"))
+
+
 
 

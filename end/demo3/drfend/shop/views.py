@@ -181,3 +181,14 @@ class GoodImgsViewSets(viewsets.ModelViewSet):
     queryset = GoodImgs.objects.all()
     serializer_class = GoodImgsSerializer
 
+class UserViewSets(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    @action(methods=["POST"],detail=False)
+    def regist(self,request):
+        seria = UserRegistSerializer(data=request.data)
+        seria.is_valid(raise_exception=True)
+        seria.save()
+        return Response("创建成功")
+

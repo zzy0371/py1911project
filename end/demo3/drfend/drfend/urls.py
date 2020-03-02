@@ -31,6 +31,7 @@ router = routers.DefaultRouter()
 router.register('categorys',CategoryViewSets2)  # /categorys/     /categorys/(?P<pk>\d+)/
 router.register('goods',GoodViewSets)
 router.register('goodimgs',GoodImgsViewSets)
+router.register('users',UserViewSets)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
