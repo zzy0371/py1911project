@@ -23,12 +23,12 @@ from shop.views import *
 # 引入API文档路由
 from rest_framework.documentation import include_docs_urls
 
-# 引入DRF自带的路由类
+# 引入DRF自带的路由类  根据视图名字可以自动生成 系列 路由
 from rest_framework import routers
 router = routers.DefaultRouter()
 
 # 可以通过router默认路由注册资源
-router.register('categorys',CategoryViewSets2)
+router.register('categorys',CategoryViewSets2)  # /categorys/     /categorys/(?P<pk>\d+)/
 router.register('goods',GoodViewSets)
 router.register('goodimgs',GoodImgsViewSets)
 
@@ -46,8 +46,8 @@ urlpatterns = [
     # url(r'^categorylist/$',CategoryListView.as_view(),name='categorylist'),
     # url(r'^categorydetail/(\d+)/$',CategoryDetailView.as_view(),name='categorydetail'),
 
-    # url(r'^categorylist/$',CategoryListView.as_view(),name='categorylist'),
-    # url(r'^categorydetail/(?P<pk>\d+)/$',CategoryDetailView.as_view(),name='categorydetail'),
+    # url(r'^categorylist/$',CategoryListView2.as_view(),name='categorylist'),
+    # url(r'^categorydetail/(?P<pk>\d+)/$',CategoryDetailView2.as_view(),name='categorydetail'),
 
     # url(r'^categorys/$',CategoryViewSets2.as_view({'get':'list','post':'create'})),
     # url(r'^categorys/(?P<pk>\d+)/$',CategoryViewSets2.as_view({'get':'retrieve','put':'update','patch':'update','delete':'destroy'})),

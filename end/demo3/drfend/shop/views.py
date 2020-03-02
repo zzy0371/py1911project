@@ -4,7 +4,7 @@ from .serializers import *
 from django.http import HttpResponse
 
 # 通过api_view装饰器可以将基于函数的视图转换成APIView基于类的视图
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,action
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -29,10 +29,6 @@ class CategoryListView2(generics.GenericAPIView,mixins.ListModelMixin,mixins.Cre
     def post(self,request):
         return self.create(request)
 
-
-
-
-
 class CategoryDetailView2(generics.GenericAPIView,mixins.RetrieveModelMixin,mixins.UpdateModelMixin,mixins.DestroyModelMixin):
     queryset = Category.objects.all()
     serializer_class = CategorySerizlizer
@@ -48,12 +44,6 @@ class CategoryDetailView2(generics.GenericAPIView,mixins.RetrieveModelMixin,mixi
 
     def delete(self,request,pk):
         return self.delete(request,pk)
-
-
-
-
-
-
 
 class CategoryListView1(APIView):
     """
@@ -78,7 +68,6 @@ class CategoryListView1(APIView):
         seria.save()
         return Response(seria.data,status=status.HTTP_201_CREATED)
 
-
 class CategoryDetailView1(APIView):
     def get(self,request,cid):
         seria = CategorySerizlizer(instance=get_object_or_404(Category,pk=cid))
@@ -100,8 +89,6 @@ class CategoryDetailView1(APIView):
     def delete(self,request,cid):
         get_object_or_404(Category,pk=cid).delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
 
 @api_view(['GET','POST'])
 def categoryList(request):
@@ -140,8 +127,6 @@ def categoryDetail(request,cid):
     else:
         return HttpResponse("当前路由不允许"+request.method+"操作")
 
-
-
 class CategoryListView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerizlizer
@@ -152,8 +137,25 @@ class CategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class CategoryViewSets2(viewsets.ModelViewSet):
+    """
+    如果返回的内容就是模型列表 用queryset方便
+    如果需要处理  可以使用base_name 结合get_queryset
+    """
+
     queryset = Category.objects.all()
-    serializer_class = CategorySerizlizer
+
+    # def get_queryset(self):
+    #     return Category.objects.all()[:3]
+
+
+    # serializer_class = CategorySerizlizer
+    def get_serializer_class(self):
+        return CategorySerizlizer
+
+    @action(methods=['GET'],detail=False)
+    def getlatestcategory(self,request):
+        seria = CategorySerizlizer(instance=Category.objects.all()[:3],many=True)
+        return Response(data=seria.data,status=status.HTTP_200_OK)
 
 
 
