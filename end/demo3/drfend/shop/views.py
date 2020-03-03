@@ -16,7 +16,7 @@ from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework import mixins
 
-
+from rest_framework import permissions
 
 
 
@@ -173,6 +173,20 @@ class CategoryViewSets(viewsets.ModelViewSet):
     # def get_serializer_class(self):
     #     return CategorySerizlizer
 
+    # 用户未登录不显示 分类列表  优先级别高于全局配置
+    # permission_classes = [permissions.IsAdminUser]
+
+    # 超级管理员可以创建分类  普通用户可以查看分类
+    def get_permissions(self):
+        if self.action == "create" or self.action == "update" or self.action == "partial_update" or self.action == "destroy":
+            return [permissions.IsAdminUser()]
+        else:
+            return []
+
+
+
+
+
 class GoodViewSets(viewsets.ModelViewSet):
     queryset = Good.objects.all()
     serializer_class = GoodSerializer
@@ -210,6 +224,11 @@ class UserViewSets(viewsets.GenericViewSet,mixins.CreateModelMixin, mixins.Retri
         if self.action == "create":
             return UserRegistSerializer
         return UserSerializer
+
+
+
+
+
 
 
 

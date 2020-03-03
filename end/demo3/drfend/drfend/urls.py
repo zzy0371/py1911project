@@ -28,7 +28,7 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 
 # 可以通过router默认路由注册资源
-router.register('categorys',CategoryViewSets2)  # /categorys/     /categorys/(?P<pk>\d+)/
+router.register('categorys',CategoryViewSets)  # /categorys/     /categorys/(?P<pk>\d+)/
 router.register('goods',GoodViewSets)
 router.register('goodimgs',GoodImgsViewSets)
 router.register('users',UserViewSets)
