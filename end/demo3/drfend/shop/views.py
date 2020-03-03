@@ -177,12 +177,15 @@ class CategoryViewSets(viewsets.ModelViewSet):
     # 用户未登录不显示 分类列表  优先级别高于全局配置
     # permission_classes = [permissions.IsAdminUser]
 
+    # 授权的前提是认证  登录过（认证过）之后可以进行权限判断
+
+
     # 超级管理员可以创建分类  普通用户可以查看分类
     def get_permissions(self):
         if self.action == "create" or self.action == "update" or self.action == "partial_update" or self.action == "destroy":
             return [permissions.IsAdminUser()]
         else:
-            return []
+            return [permissions.IsAuthenticated()]
 
 
 

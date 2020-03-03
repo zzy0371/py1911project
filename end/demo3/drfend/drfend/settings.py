@@ -140,6 +140,17 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
     ],
+    # 全局认证 优先级高于试图类中的配置
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        # 默认首先使用session认证
+        'rest_framework.authentication.SessionAuthentication',
+
+        # 默认首先使用basic认证 用户名密码
+
+        # 发起请求时  可以将用户名密码 进行编码 写入Authorization中然后 发起请求
+        # 将请求中携带的HTTP_AUTHORIZATION 进行解码 类似于 Basic YWRtaW46MTIzNDU2  进行解码处理得到对应的用户 获取用户成功，认证成功  获取失败 认证失败
+        'rest_framework.authentication.BasicAuthentication'
+    ],
 }
 
 # 应用名 模型名  推荐在没有数据库的前提 去配置
