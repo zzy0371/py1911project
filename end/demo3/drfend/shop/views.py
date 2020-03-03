@@ -17,6 +17,7 @@ from rest_framework import generics
 from rest_framework import mixins
 
 from rest_framework import permissions
+from . import permissions as mypermissions
 
 
 
@@ -224,6 +225,36 @@ class UserViewSets(viewsets.GenericViewSet,mixins.CreateModelMixin, mixins.Retri
         if self.action == "create":
             return UserRegistSerializer
         return UserSerializer
+
+class OrderViewSets(viewsets.ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializers
+
+    # permission_classes = [permissions.OrdersPermission]
+
+    def get_permissions(self):
+        """
+        超级管理员只可以展示所有订单
+        普通用户 可以创建修改订单 不可以操作其他用户的订单
+        :return:
+        """
+        print("http方法为",self.action)
+        if self.action == "create":
+            return [permissions.IsAuthenticated()]
+        elif self.action == "update" or self.action == "partial_update" or self.action == "retrieve" or self.action == "destroy":
+            return [mypermissions.OrdersPermission()]
+        else:
+            return [permissions.IsAdminUser()]
+
+
+# http方法                          混合类关键字                   action关键字
+# GET列表                           List                          get
+# POST创建对象                       Create                       create
+# GET 单个对象                       Retrieve                     retrieve
+# PUT 修改对象提供全属性              Update                       update
+# PATCH 修改对象提供部分属性          Update                       partial_update
+# DELETE 删除对象                    Destroy                      destroy
+
 
 
 
