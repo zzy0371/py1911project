@@ -144,9 +144,14 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         # 默认首先使用session认证
         'rest_framework.authentication.SessionAuthentication',
+        # cookie与session  cookie是存储在浏览器上的非敏感数据
+        # session为存储在服务器上的敏感数据  但是session离不开cookie   因为session的sessionid 存储在浏览器中
+        # 发起请求时 需要在Cookie中携带 sessionid   csrftoken   在header中携带X-CSRFToken  值可以在浏览器登录用户之后找cookie复制
+
+
+
 
         # 默认首先使用basic认证 用户名密码
-
         # 发起请求时  可以将用户名密码 进行编码 写入Authorization中然后 发起请求
         # 将请求中携带的HTTP_AUTHORIZATION 进行解码 类似于 Basic YWRtaW46MTIzNDU2  进行解码处理得到对应的用户 获取用户成功，认证成功  获取失败 认证失败
         'rest_framework.authentication.BasicAuthentication'
