@@ -136,4 +136,5 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.AutoSchema',
 }
 
+# 应用名 模型名  推荐在没有数据库的前提 去配置
 AUTH_USER_MODEL = 'shop.User'

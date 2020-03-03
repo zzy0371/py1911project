@@ -181,14 +181,35 @@ class GoodImgsViewSets(viewsets.ModelViewSet):
     queryset = GoodImgs.objects.all()
     serializer_class = GoodImgsSerializer
 
-class UserViewSets(viewsets.ModelViewSet):
+class UserViewSets1(viewsets.GenericViewSet,mixins.RetrieveModelMixin,mixins.UpdateModelMixin,mixins.DestroyModelMixin):
+    """
+    声明用户资源类 用户操作： 获取个人信息  更新个人信息   删除账户
+    扩展出action路由   用户操作：  创建账户
+    """
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+    # 使用action扩展资源的http方法
     @action(methods=["POST"],detail=False)
     def regist(self,request):
         seria = UserRegistSerializer(data=request.data)
         seria.is_valid(raise_exception=True)
         seria.save()
-        return Response("创建成功")
+        return Response(seria.data,status=status.HTTP_201_CREATED)
+
+class UserViewSets(viewsets.GenericViewSet,mixins.CreateModelMixin, mixins.RetrieveModelMixin,mixins.UpdateModelMixin,mixins.DestroyModelMixin):
+    """
+    声明用户资源类 用户操作： 获取个人信息  更新个人信息   删除账户
+    扩展出action路由   用户操作：  创建账户
+    """
+    queryset = User.objects.all()
+    # serializer_class = UserSerializer
+
+    def get_serializer_class(self):
+        print("action代表http方法",self.action)
+        if self.action == "create":
+            return UserRegistSerializer
+        return UserSerializer
+
+
 
