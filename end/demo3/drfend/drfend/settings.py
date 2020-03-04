@@ -161,6 +161,14 @@ REST_FRAMEWORK = {
         # 将请求中携带的HTTP_AUTHORIZATION 进行解码 类似于 Basic YWRtaW46MTIzNDU2  进行解码处理得到对应的用户 获取用户成功，认证成功  获取失败 认证失败
         'rest_framework.authentication.BasicAuthentication'
     ],
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '100/day',
+        'user': '1000/day'
+    }
 }
 
 # 应用名 模型名  推荐在没有数据库的前提 去配置

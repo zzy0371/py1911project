@@ -19,7 +19,7 @@ from rest_framework import mixins
 from rest_framework import permissions
 from . import permissions as mypermissions
 
-
+from rest_framework import throttling
 
 class CategoryListView2(generics.GenericAPIView,mixins.ListModelMixin,mixins.CreateModelMixin):
     queryset = Category.objects.all()
@@ -187,7 +187,7 @@ class CategoryViewSets(viewsets.ModelViewSet):
         else:
             return [permissions.IsAuthenticated()]
 
-
+    throttle_classes = [throttling.AnonRateThrottle,throttling.UserRateThrottle]
 
 
 
