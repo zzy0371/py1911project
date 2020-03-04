@@ -59,7 +59,7 @@ urlpatterns = [
     # url(r'^categorys/(?P<pk>\d+)/$',CategoryViewSets2.as_view({'get':'retrieve','put':'update','patch':'update','delete':'destroy'})),
 
     # 先通过用户名密码 得到Token  VUE将refresh以及access保存  通过access请求服务器   通过refresh获取新的access
-    url(r'^login/$',token_obtain_pair,name='login'),
+    url(r'^obtaintoken/$',token_obtain_pair,name='login'),
     url(r'^refresh/$',token_refresh,name='refresh'),
     # API文档地址
     path('api/v1/docs/',include_docs_urls(title="RestFulAPI",description="RestFulAPI v1")),

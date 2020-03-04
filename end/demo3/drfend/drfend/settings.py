@@ -165,3 +165,11 @@ REST_FRAMEWORK = {
 
 # 应用名 模型名  推荐在没有数据库的前提 去配置
 AUTH_USER_MODEL = 'shop.User'
+
+# 自定义认证类   应用名.文件名.认证类名
+
+AUTHENTICATION_BACKENDS = ('shop.authbackend.MyLoginBackend',)
+
+
+
+
