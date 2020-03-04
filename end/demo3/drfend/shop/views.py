@@ -24,6 +24,11 @@ from .throttling import MyAnon,MyUser
 
 from .pagination import MyPagination
 
+# 引入django过滤类
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
+
+
 class CategoryListView2(generics.GenericAPIView,mixins.ListModelMixin,mixins.CreateModelMixin):
     queryset = Category.objects.all()
     serializer_class = CategorySerizlizer
@@ -196,9 +201,21 @@ class CategoryViewSets(viewsets.ModelViewSet):
 
 
 
+    # 局部过滤配置
+    filter_backends = [DjangoFilterBackend,  filters.SearchFilter ,filters.OrderingFilter]
+
+    filterset_fields = ["name"]
+    search_fields = ["name"]
+    ordering_fields = ["id"]
+
+
+
 class GoodViewSets(viewsets.ModelViewSet):
     queryset = Good.objects.all()
     serializer_class = GoodSerializer
+
+    filterset_fields = ["name"]
+
 
 class GoodImgsViewSets(viewsets.ModelViewSet):
     queryset = GoodImgs.objects.all()
