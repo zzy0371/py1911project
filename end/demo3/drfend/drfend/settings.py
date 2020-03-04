@@ -142,6 +142,11 @@ REST_FRAMEWORK = {
     ],
     # 全局认证 优先级高于试图类中的配置
     'DEFAULT_AUTHENTICATION_CLASSES': [
+
+        # rest_framework_jwt
+        # rest_framework_simplejwt
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+
         # 默认首先使用session认证
         'rest_framework.authentication.SessionAuthentication',
         # cookie与session  cookie是存储在浏览器上的非敏感数据
