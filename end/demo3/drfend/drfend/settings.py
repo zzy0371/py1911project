@@ -166,9 +166,13 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.UserRateThrottle'
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '100/day',
-        'user': '1000/day'
-    }
+        'anon': '1/day',
+        'user': '2/day'
+    },
+    # 全局配置分页
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 2,
 }
 
 # 应用名 模型名  推荐在没有数据库的前提 去配置
@@ -177,6 +181,12 @@ AUTH_USER_MODEL = 'shop.User'
 # 自定义认证类   应用名.文件名.认证类名
 
 AUTHENTICATION_BACKENDS = ('shop.authbackend.MyLoginBackend',)
+
+
+
+# DRF提供了分页 pagination  建立在Django基础上  进行深层封装
+# from django.core.paginator import Paginator,Page
+# 分页       Paginator(将列表分成多个页)      Page(每一个页)
 
 
 

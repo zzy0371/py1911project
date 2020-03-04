@@ -20,6 +20,9 @@ from rest_framework import permissions
 from . import permissions as mypermissions
 
 from rest_framework import throttling
+from .throttling import MyAnon,MyUser
+
+from .pagination import MyPagination
 
 class CategoryListView2(generics.GenericAPIView,mixins.ListModelMixin,mixins.CreateModelMixin):
     queryset = Category.objects.all()
@@ -185,9 +188,11 @@ class CategoryViewSets(viewsets.ModelViewSet):
         if self.action == "create" or self.action == "update" or self.action == "partial_update" or self.action == "destroy":
             return [permissions.IsAdminUser()]
         else:
-            return [permissions.IsAuthenticated()]
+            return []
 
-    throttle_classes = [throttling.AnonRateThrottle,throttling.UserRateThrottle]
+    throttle_classes = [MyAnon,MyUser]
+
+    pagination_class = MyPagination
 
 
 
