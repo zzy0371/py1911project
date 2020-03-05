@@ -20,6 +20,12 @@ import jsCookie from 'js-cookie'
 Vue.prototype.$jsCookie = jsCookie
 
 
+// 导入Vant 
+import Vant from 'vant';
+import 'vant/lib/index.css';
+
+Vue.use(Vant);
+
 new Vue({
   router,
   store,
