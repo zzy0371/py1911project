@@ -151,7 +151,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
 
         # 默认首先使用session认证
-        'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
         # cookie与session  cookie是存储在浏览器上的非敏感数据
         # session为存储在服务器上的敏感数据  但是session离不开cookie   因为session的sessionid 存储在浏览器中
         # 发起请求时 需要在Cookie中携带 sessionid   csrftoken   在header中携带X-CSRFToken  值可以在浏览器登录用户之后找cookie复制
@@ -162,7 +162,7 @@ REST_FRAMEWORK = {
         # 默认首先使用basic认证 用户名密码
         # 发起请求时  可以将用户名密码 进行编码 写入Authorization中然后 发起请求
         # 将请求中携带的HTTP_AUTHORIZATION 进行解码 类似于 Basic YWRtaW46MTIzNDU2  进行解码处理得到对应的用户 获取用户成功，认证成功  获取失败 认证失败
-        'rest_framework.authentication.BasicAuthentication'
+        # 'rest_framework.authentication.BasicAuthentication'
     ],
     # 'DEFAULT_THROTTLE_CLASSES': [
     #     'rest_framework.throttling.AnonRateThrottle',
@@ -174,8 +174,8 @@ REST_FRAMEWORK = {
     # },
     # 全局配置分页
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 2,
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    # 'PAGE_SIZE': 2,
 
     # 全局过滤
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],

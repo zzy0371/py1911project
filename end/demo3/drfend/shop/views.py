@@ -197,7 +197,7 @@ class CategoryViewSets(viewsets.ModelViewSet):
 
     throttle_classes = [MyAnon,MyUser]
 
-    pagination_class = MyPagination
+    # pagination_class = MyPagination
 
 
 
