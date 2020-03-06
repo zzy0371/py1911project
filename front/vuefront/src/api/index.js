@@ -31,6 +31,8 @@ axios.interceptors.response.use(function (response) {
 		window.location.href="#/login/"
 		jsCookie.remove("access");
 		jsCookie.remove("refresh");
+		jsCookie.remove("username");
+		jsCookie.remove("userinfo");
 	}
 	
 	
@@ -64,5 +66,12 @@ export const modifyCategory = (param)=>{
 export const getToken = (param)=>{
 	return axios.post("/obtaintoken/",param,)
 }
+export const getUserinfo = (param)=>{
+	return axios.get("/getuserinfo/",param,)
+}
+export const regist = (param)=>{
+	return axios.post("/api/v1/users/",param,)
+}
+
 
 
