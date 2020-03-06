@@ -78,6 +78,9 @@ export const modifyUserInfo = (param)=>{
 	console.log(id,"===");
 	return axios.patch(`api/v1/users/${id}/`,param.userinfo,)
 }
-
+export const sendmsg = (param)=>{
+	console.log(param,"===========");
+	return axios.post("sendmsg/",param,)
+}
 
 

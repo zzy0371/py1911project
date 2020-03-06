@@ -25,6 +25,9 @@
 		    placeholder="重复密码"
 		    :rules="[{ required: true, message: '请填写重复密码' }]"
 		  />
+		  
+		  
+		  
 		  <div style="margin: 16px;">
 		    <van-button round block type="info" native-type="submit">
 		      提交
@@ -32,7 +35,24 @@
 		  </div>
 		</van-form>
 		
+		<van-field
+		  v-model="telephone"
+		  center
+		  clearable
+		  label="短信验证码"
+		  placeholder="请输入短信验证码"
+		>
+		  <van-button slot="button" size="small" type="primary" @click="sendmsg">发送验证码</van-button>
+		</van-field>
 		
+		<van-field
+		  v-model="verify"
+		  type="number"
+		  name="验证码"
+		  label="验证码"
+		  placeholder="验证码"
+		  :rules="[{ required: true, message: '请填写验证码' }]"
+		/>
 	</div>
 </template>
 
@@ -43,10 +63,21 @@
 				username:"",
 				password:"",
 				password2:"",
+				telephone:"",
+				verify:""
 			}  
 		},
 		methods:{
-
+			sendmsg(){
+				console.log("发送验证码");
+				this.$api.sendmsg({
+					telephone:this.telephone
+				}).then(res=>{
+					console.log("发送成功");
+				}).catch(err=>{
+					发送失败
+				})
+			},
 			regist(){
 				this.$api.regist({
 					username:this.username,
