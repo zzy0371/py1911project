@@ -38,6 +38,8 @@ router.register('goodimgs',GoodImgsViewSets)
 router.register('users',UserViewSets)
 router.register('orders',OrderViewSets)
 
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     # url(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
@@ -61,6 +63,7 @@ urlpatterns = [
     # 先通过用户名密码 得到Token  VUE将refresh以及access保存  通过access请求服务器   通过refresh获取新的access
     url(r'^obtaintoken/$',token_obtain_pair,name='login'),
     url(r'^refresh/$',token_refresh,name='refresh'),
+    url(r'^getuserinfo/$',getuserinfo),
     # API文档地址
     path('api/v1/docs/',include_docs_urls(title="RestFulAPI",description="RestFulAPI v1")),
     # 为了在DRF路由调试界面能够使用用户相关功能需要引入以下路由

@@ -182,7 +182,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         # fields = "__all__"
-        exclude = ["user_permissions","groups"]
+        exclude = ["user_permissions","groups","password"]
 
     def validate(self, attrs):
         print("原生创建")

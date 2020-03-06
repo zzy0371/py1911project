@@ -29,6 +29,15 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 
 
+from rest_framework_simplejwt.authentication import JWTAuthentication
+@api_view(["GET"])
+def getuserinfo(request):
+    user = JWTAuthentication().authenticate(request)
+    seria = UserSerializer(instance=user[0])
+    return Response(seria.data,status=status.HTTP_200_OK)
+
+
+
 class CategoryListView2(generics.GenericAPIView,mixins.ListModelMixin,mixins.CreateModelMixin):
     queryset = Category.objects.all()
     serializer_class = CategorySerizlizer
@@ -250,6 +259,10 @@ class UserViewSets(viewsets.GenericViewSet,mixins.CreateModelMixin, mixins.Retri
         if self.action == "create":
             return UserRegistSerializer
         return UserSerializer
+
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["username"]
+
 
 class OrderViewSets(viewsets.ModelViewSet):
     queryset = Order.objects.all()
