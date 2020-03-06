@@ -294,7 +294,74 @@ class OrderViewSets(viewsets.ModelViewSet):
 # DELETE 删除对象                    Destroy                      destroy
 
 
+from urllib import request
+from urllib import parse
 
+import urllib.request
+import time
+import hashlib
+import random
+
+def getnums():
+    s = ""
+    for i in range(6):
+        s += str( random.randrange(0,9))
+    return s
+
+
+@api_view(["POST"])
+def sendmsg(req):
+    try:
+        print(req.data)
+        """
+        向数据库中写入数据 
+        手机号 验证码  发送时间
+        """
+        print("python demo starting...")
+
+        url = "https://openapi.miaodiyun.com/distributor/sendSMS"
+        accountSid = "5ddd6bfa5d1195eb16d160e64d5dbb8c";
+        to = req.data["telephone"];
+        templateid = "241019";
+        param = getnums();
+        print("发送验证码为",param)
+        auth_token = "cc8baf390e4f5e8ea9ee4a7df9cbd464";
+
+        t = time.time();
+        timestamp = str((int(round(t * 1000))));
+        sig = accountSid + auth_token + timestamp;
+        m1 = hashlib.md5()
+        m1.update(sig.encode("utf-8"))
+        sig = m1.hexdigest()
+
+        data = "accountSid=" + accountSid + "&to=" + to + "&templateid=" + templateid + "&param=" + param + "&timestamp=" + timestamp + "&sig=" + sig;
+        headers = {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.23 Mobile Safari/537.36'
+        }
+        data = str.encode(data);
+
+        print("data sent to SMS server is:")
+        print(data);
+        req = request.Request(url, headers=headers, data=data)  # POST方法
+        page = request.urlopen(req).read()
+        page = page.decode('utf-8')
+        print("response from SMS server is:")
+        print(page)
+
+        print("python demo finished")
+
+        ver = Verify()
+        ver.code=param
+        ver.telephone=to
+        ver.save()
+
+        return Response("发送成功")
+
+
+    except Exception as e:
+        print(e)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 
