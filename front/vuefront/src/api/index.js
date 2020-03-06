@@ -72,6 +72,12 @@ export const getUserinfo = (param)=>{
 export const regist = (param)=>{
 	return axios.post("/api/v1/users/",param,)
 }
+export const modifyUserInfo = (param)=>{
+	// console.log("提交更改数据",param);
+	let id = param.userinfo.id
+	console.log(id,"===");
+	return axios.patch(`api/v1/users/${id}/`,param.userinfo,)
+}
 
 
 
