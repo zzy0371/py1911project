@@ -25,7 +25,7 @@ from .settings import MEDIA_ROOT
 from rest_framework.documentation import include_docs_urls
 
 # 引入用户应用视图
-from user.views import UserViewSets
+from user.views import UserViewSets,ReceiveAddressViewSets
 from rest_framework_simplejwt.views import token_obtain_pair,token_refresh,token_verify
 
 
@@ -33,6 +33,7 @@ from rest_framework_simplejwt.views import token_obtain_pair,token_refresh,token
 from rest_framework import routers
 router = routers.DefaultRouter()
 router.register('users',UserViewSets)
+router.register('receiveaddress',ReceiveAddressViewSets)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

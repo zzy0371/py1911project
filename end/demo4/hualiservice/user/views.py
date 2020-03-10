@@ -9,12 +9,12 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 
 
-# @api_view(["POST"])
-# def sendmsg(request):
-#     seria = UserCodeSerializer(data=request.data)
-#     seria.is_valid(raise_exception=True)
-#     seria.save()
-#     return Response("发送验证码成功")
+class ReceiveAddressViewSets(viewsets.ModelViewSet):
+    queryset = ReceiveAddress.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+    def get_queryset(self):
+        return ReceiveAddress.objects.filter(user=self.request.user)
+    serializer_class = ReceiveAddressSerializer
 
 class UserViewSets(viewsets.GenericViewSet,mixins.CreateModelMixin,mixins.UpdateModelMixin,mixins.RetrieveModelMixin):
     queryset = UserProfile.objects.all()

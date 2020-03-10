@@ -135,3 +135,8 @@ class UserCodeSerializer(serializers.Serializer):
         except Exception as e:
             print(e)
             raise serializers.ValidationError("失败了")
+
+class ReceiveAddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReceiveAddress
+        fields = "__all__"
