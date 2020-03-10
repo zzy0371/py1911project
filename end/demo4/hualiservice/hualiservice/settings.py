@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'user',
     'flower',
     'trade',
-    'user_operate'
+    'user_operate',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -140,3 +141,18 @@ MEDIA_URL ='/media/'
 
 # 自定义用户类
 AUTH_USER_MODEL = 'user.UserProfile'
+# 自定义认证类
+AUTHENTICATION_BACKENDS=("user.auth.MyLoginBackend",)
+
+
+# RestFul配置
+REST_FRAMEWORK = {
+    # Schema
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+
+}

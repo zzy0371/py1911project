@@ -10,9 +10,9 @@ SEX = (
 )
 
 class UserProfile(AbstractUser):
-    email = models.EmailField(unique=True, verbose_name="邮箱")
+    telephone = models.CharField(max_length=11,verbose_name="手机号")
+    email = models.EmailField(blank=True,null=True, verbose_name="邮箱")
     username = models.CharField(max_length=10,unique=True,null=True,blank=True,verbose_name="用户名")
-    telephone = models.CharField(max_length=11,null=True,blank=True,verbose_name="手机号")
     # headImg 需要安装Pillow模块
     headImg = models.ImageField(upload_to="head/",default="head/default_head.png", verbose_name="头像")
     sex = models.CharField(max_length=6,choices=SEX,default="secret", verbose_name="性别")
@@ -40,3 +40,19 @@ class ReceiveAddress(models.Model):
 
     def __str__(self):
         return self.user.__str__()+"的收货地址"
+
+CODETYPE = (
+    ("regist","注册验证码"),
+    ("update","改密验证码")
+)
+
+class Code(models.Model):
+    telephone = models.CharField(max_length=11,verbose_name="手机号")
+    code = models.CharField(max_length=6,verbose_name="验证码")
+    type = models.CharField(max_length=6,verbose_name="验证码类型")
+    create_time = models.DateTimeField(auto_now_add=True,verbose_name="生成时间")
+
+    class Meta:
+        verbose_name = "验证码"
+        verbose_name_plural = verbose_name
+        unique_together = ["telephone", "code"]

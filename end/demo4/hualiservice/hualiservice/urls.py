@@ -16,11 +16,35 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from django.conf.urls import url
+#媒体资源路由
+from django.conf.urls import url,include
 from django.views.static import serve
 from .settings import MEDIA_ROOT
+
+# API文档
+from rest_framework.documentation import include_docs_urls
+
+# 引入用户应用视图
+from user.views import UserViewSets
+from rest_framework_simplejwt.views import token_obtain_pair,token_refresh,token_verify
+
+
+# 注册路由
+from rest_framework import routers
+router = routers.DefaultRouter()
+router.register('users',UserViewSets)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
+
+    url('api/v1/docs/',include_docs_urls(title="花礼网接口文档")),
+
+    url('api/v1/users/login/',token_obtain_pair),
+    url('api/v1/users/refresh/',token_refresh),
+    url('api/v1/users/verify/',token_verify),
+
+
+    path('api/v1/',include(router.urls)),
+    path('',include('rest_framework.urls')),
 ]
