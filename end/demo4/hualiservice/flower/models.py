@@ -4,7 +4,7 @@ from django.db import models
 
 class Category(models.Model):
     name = models.CharField(max_length=20,unique=True,verbose_name="分类名")
-    parent = models.ForeignKey('self',null=True,blank=True,on_delete=models.CASCADE,verbose_name="父级分类")
+    parent = models.ForeignKey('self',null=True,blank=True,on_delete=models.CASCADE,verbose_name="父级分类",related_name="sub_cat")
 
     class Meta:
         verbose_name = "分类表"

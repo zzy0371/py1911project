@@ -26,6 +26,7 @@ from rest_framework.documentation import include_docs_urls
 
 # 引入用户应用视图
 from user.views import UserViewSets,ReceiveAddressViewSets
+from flower.views import FlowerViewSets,CategoryViewSets
 from rest_framework_simplejwt.views import token_obtain_pair,token_refresh,token_verify
 
 
@@ -34,6 +35,10 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 router.register('users',UserViewSets)
 router.register('receiveaddress',ReceiveAddressViewSets)
+
+router.register('categorys',CategoryViewSets)
+router.register('flowers',FlowerViewSets)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
