@@ -28,6 +28,7 @@ from rest_framework.documentation import include_docs_urls
 from user.views import UserViewSets,ReceiveAddressViewSets
 from flower.views import FlowerViewSets,CategoryViewSets
 from user_operate.views import UserFavViewset,CommentViewSets
+from trade.views import CartViewSets
 from rest_framework_simplejwt.views import token_obtain_pair,token_refresh,token_verify
 
 
@@ -42,6 +43,10 @@ router.register('flowers',FlowerViewSets)
 
 router.register(r'userfavs', UserFavViewset)
 router.register(r'comments', CommentViewSets)
+
+router.register(r'carts', CartViewSets)
+
+
 
 
 urlpatterns = [
