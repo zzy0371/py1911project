@@ -4,7 +4,12 @@ from .models import *
 from .serializer import *
 # Create your views here.
 
-class CommentViewSets(viewsets.GenericViewSet,mixins.ListModelMixin,mixins.CreateModelMixin,mixins.RetrieveModelMixin,mixins.DestroyModelMixin):
+class CommentViewSets(viewsets.GenericViewSet,mixins.ListModelMixin,mixins.CreateModelMixin,mixins.DestroyModelMixin):
+    """
+    list 评论列表
+    create 创建评论
+    delete 删除评论
+    """
     queryset = Comment.objects.all()
     permission_classes = [permissions.IsAuthenticated]
 
@@ -16,8 +21,16 @@ class CommentViewSets(viewsets.GenericViewSet,mixins.ListModelMixin,mixins.Creat
             return CommentDetailSerializer
         else:
             return CommentSerializer
+#     TODO 添加评论时添加评论图
 
-class UserFavViewset(viewsets.GenericViewSet,mixins.ListModelMixin,mixins.CreateModelMixin,mixins.RetrieveModelMixin, mixins.DestroyModelMixin):
+
+
+class UserFavViewset(viewsets.GenericViewSet,mixins.ListModelMixin,mixins.CreateModelMixin,mixins.DestroyModelMixin):
+    """
+    list 收藏列表
+    create 添加收藏
+    destroy 删除收藏
+    """
     queryset = Collect.objects.all()
     permission_classes = [permissions.IsAuthenticated]
     def get_queryset(self):

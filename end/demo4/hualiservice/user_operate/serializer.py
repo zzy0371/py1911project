@@ -5,7 +5,7 @@ from flower.serializer import FlowerSerializer
 from .models import *
 class UserFavDetailSerializer(serializers.ModelSerializer):
     # flower = FlowerSerializer()
-    flower = serializers.CharField(source='flower.name')
+    # flower = serializers.CharField(source='flower.name')
 
     class Meta:
         model = Collect
@@ -44,7 +44,6 @@ class CommentDetailSerializer(serializers.ModelSerializer):
         fields = ("flower", "rate", "comment", "imgs", "id")
 
     def get_imgs(self, instance):
-        # print(instance.commentimg_set.all(),"集合")
         return CommentImgSerializer(instance.commentimg_set.all(),many=True).data
 
 

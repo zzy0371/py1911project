@@ -11,7 +11,6 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = "__all__"
 
-
 class FlowerImageSerializer(serializers.ModelSerializer):
     flower = serializers.CharField(source='flower.name')
     class Meta:

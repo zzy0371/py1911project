@@ -41,10 +41,12 @@ INSTALLED_APPS = [
     'flower',
     'trade',
     'user_operate',
-    'rest_framework'
+    'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -141,8 +143,8 @@ MEDIA_URL ='/media/'
 
 # 自定义用户类
 AUTH_USER_MODEL = 'user.UserProfile'
-# 自定义认证类
-AUTHENTICATION_BACKENDS=("user.auth.MyLoginBackend",)
+# 自定义认证类 TODO Admin后台管理的登录
+# AUTHENTICATION_BACKENDS=("user.auth.MyLoginBackend",)
 
 
 # RestFul配置
@@ -156,3 +158,6 @@ REST_FRAMEWORK = {
     ],
 
 }
+
+#setting.py
+CORS_ORIGIN_ALLOW_ALL = True

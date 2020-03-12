@@ -10,6 +10,13 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 
 class ReceiveAddressViewSets(viewsets.ModelViewSet):
+    """
+    list  收货地址列表
+    create 添加收货地址
+    retrieve 收货地址详情
+    patch 修改收货地址
+    delete 删除收货地址
+    """
     queryset = ReceiveAddress.objects.all()
     permission_classes = [permissions.IsAuthenticated]
     def get_queryset(self):
