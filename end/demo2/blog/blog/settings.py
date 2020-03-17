@@ -82,10 +82,21 @@ WSGI_APPLICATION = 'blog.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+# 数据库的配置参数
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
+
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        # name 为数据库的名字 mysql的数据库一定要先手动创建好  create database blog charset=utf8;
+        'NAME': 'blog',
+        'USER': 'root',
+        'PASSWORD': '123456',
+        # 'HOST': 'localhost'
+        # 'PORT': 3306
     }
 }
 

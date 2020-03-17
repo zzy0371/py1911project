@@ -28,12 +28,12 @@ class Order(models.Model):
     trader_sn = models.CharField(max_length=100,unique=True,null=True,blank=True,verbose_name="交易号")
     state = models.CharField(max_length=6, choices=ORDERSTATE, verbose_name="订单状态",default="undo")
     leaveMessage = models.CharField(max_length=200, verbose_name="留言", null=True, blank=True)
-    money = models.IntegerField(verbose_name="订单金额",default=90)
+    money = models.IntegerField(verbose_name="订单金额")
 
-    reveiver = models.CharField(max_length=20,verbose_name="收货人",default="张飞")
-    reveiveAddress = models.CharField(max_length=50,verbose_name="收货地址", default="郑州")
-    reveivePhone = models.CharField(max_length=11,verbose_name="联系电话",default="15138001200")
-    serviceTime = models.DateTimeField(verbose_name="送达时间",auto_now_add=True)
+    reveiver = models.CharField(max_length=20,verbose_name="收货人")
+    reveiveAddress = models.CharField(max_length=50,verbose_name="收货地址")
+    reveivePhone = models.CharField(max_length=11,verbose_name="联系电话")
+    serviceTime = models.DateTimeField(verbose_name="送达时间")
     remark = models.CharField(max_length=200,verbose_name="备注",null=True,blank=True)
 
 
@@ -47,7 +47,7 @@ class Order(models.Model):
 class OrderDetail(models.Model):
     order = models.ForeignKey(Order,on_delete=models.CASCADE,verbose_name="订单")
     flower = models.ForeignKey(Flower, on_delete=models.CASCADE, verbose_name="鲜花")
-    num = models.PositiveIntegerField(default=0, verbose_name="数量")
+    num = models.PositiveIntegerField(verbose_name="数量")
 
     class Meta:
         verbose_name = "订单详情表"

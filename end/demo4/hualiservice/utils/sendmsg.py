@@ -24,9 +24,10 @@ class SendMsg:
     def send(self):
         print("python demo starting...")
         to = self.telephone
-        param = getCodeStr();
-        print("发送验证码为", param)
+
+
         if not DEBUG:
+            param = getCodeStr();
             t = time.time();
             timestamp = str((int(round(t * 1000))));
             sig = ACCOUNTSID + AUTH_TOKEN + timestamp;
@@ -46,6 +47,9 @@ class SendMsg:
             print("response from SMS server is:")
             print(page)
             print("python demo finished")
+        else:
+            param="123456"
+        print("发送验证码为", param)
         return param
 
 if __name__ == '__main__':
