@@ -18,12 +18,12 @@ def login():
         return render_template("login.html")
     elif request.method == "POST":
         # 6 从form中提取表单参数
-        username = request.form.get("username")
+        email = request.form.get("email")
         password = request.form.get("password")
 
         error = None
-        if not username:
-            error = "用户名必须填写"
+        if not email:
+            error = "邮箱必须填写"
         elif not password:
             error = "密码必须填写"
 
@@ -34,12 +34,11 @@ def login():
         else:
             with sqlite3.connect("demo5.db") as con:
                 cur = con.cursor()
-                # cur.execute("select * from user where username = ? and password = ?",(username,password))
-                cur.execute("select * from user where username = ?",(username,))
+                cur.execute("select * from user where email = ?",(email,))
                 r = cur.fetchall()
                 print(r)
                 if len(r) <= 0:
-                    flash("用户名错误")
+                    flash("邮箱尚未注册用户")
                     return redirect("/login")
                 else:
                     securityPassword = r[0][2]
@@ -47,7 +46,11 @@ def login():
                         flash("密码错误")
                         return redirect("/login")
                     else:
-                        return "%s--%s" % (username, password)
+                        if r[0][5] == 0:
+                            flash("用户尚未激活不能登录")
+                            return redirect("/login")
+                        else:
+                            return "登录用户  %s" % (email)
 
 
 
@@ -55,14 +58,15 @@ def login():
 @userbp.route("/regist", methods=["GET", "POST"])
 def regist():
     if request.method == "GET":
+        # return "hello"
         return render_template("regist.html")
     elif request.method == "POST":
-        username = request.form.get("username")
+        email = request.form.get("email")
         password = request.form.get("password")
         password2 = request.form.get("password2")
         error = None
-        if not username:
-            error = "用户名不能为空"
+        if not email:
+            error = "邮箱不能为空"
         elif not password:
             error = "密码不能为空"
         elif not password2:
@@ -75,18 +79,46 @@ def regist():
         else:
             with sqlite3.connect("demo5.db") as con:
                 cur = con.cursor()
-                cur.execute("select * from user where username = ?", (username,))
+                cur.execute("select * from user where email = ?", (email,))
                 r = cur.fetchall()
                 if len(r) > 0:
-                    flash("用户已存在")
+                    flash("邮箱已注册")
                     return redirect("/regist")
                 else:
-                    securityPassword = generate_password_hash(password)
-                    cur.execute("insert into user (username, password) values (?,?) ", (username, securityPassword))
-                    con.commit()
-                    return "提取注册参数,注册成功"
 
 
+                    try:
+                        # 需要发送激活链接到用户的邮箱
+                        from flask_mail import Message
+                        from .utils import mail
+
+                        msg = Message(subject="老张大讲堂激活邮件", recipients=[email])
+                        msg.html = "  <a href='http://127.0.0.1:5000/active/8' >  点击激活  </a> "
+                        mail.send(msg)
+
+                        securityPassword = generate_password_hash(password)
+                        cur.execute("insert into user (email, password) values (?,?) ", (email, securityPassword))
+
+
+
+                        con.commit()
+
+
+                        return "提取注册参数,注册成功"
+                    except Exception as e:
+                        print(e)
+                        return "出异常了"
+
+
+
+
+@userbp.route("/active/8")
+def activeuser():
+    with sqlite3.connect("demo5.db") as con:
+        cur = con.cursor()
+        cur.execute("update user set is_active = 1 where id = ?",(7,))
+        con.commit()
+    return redirect("/login")
 
 
 

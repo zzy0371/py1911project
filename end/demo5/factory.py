@@ -39,6 +39,7 @@ def create_app():
 
 
 
+
     @app.errorhandler(404)
     def page_not_found(error):
         return render_template("404.html")
@@ -48,4 +49,14 @@ def create_app():
         return value.capitalize()
     # 10 session 是存储在服务器上的加密信息 会将sessionid保存在cookie
     app.secret_key = "\x87\xf04\x92\xa5x0\xa6R\xa2HN2-Y\x81\x87\xb4@*\xea\x19wt"
+
+    app.config["MAIL_SERVER"] = "smtp.163.com"
+    app.config["MAIL_PORT"] = 25
+    app.config["MAIL_USERNAME"] = "18137128152@163.com"
+    app.config["MAIL_PASSWORD"] = "qikuedu"
+    app.config['MAIL_DEFAULT_SENDER'] = '老张大讲堂<18137128152@163.com>'
+
+    # 扩展工厂   关联邮件
+    mail.init_app(app)
+
     return app
