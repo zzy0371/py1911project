@@ -13,11 +13,28 @@ def create_app():
     # 2 构建Flask对象 其实就是一个WSGI应用   __name__ 为flask寻找static 以及 templates提供支持
     app = Flask(__name__)
 
+    # @app.before_first_request
+    # def first_request_do_something():
+    #     import sqlite3
+    #     try:
+    #         con = sqlite3.connect("demo5.db")
+    #         cur = con.cursor()
+    #         cur.execute("DROP TABLE IF EXISTS user;")
+    #         cur.execute("CREATE TABLE user (  id INTEGER PRIMARY KEY AUTOINCREMENT,  username TEXT UNIQUE NOT NULL,  password TEXT NOT NULL, create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, is_admin INTEGER DEFAULT 0, is_active INTEGER DEFAULT 1 )")
+    #         con.commit()
+    #         cur.close()
+    #         con.close()
+    #     except Exception as e:
+    #         print(e)
+
+
+
 
     # 注册蓝图
     app.register_blueprint(bookbp)
     app.register_blueprint(userbp)
     app.register_blueprint(otherbp)
+
 
 
 

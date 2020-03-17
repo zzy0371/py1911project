@@ -1,5 +1,6 @@
 from flask import Blueprint,request,redirect,render_template,flash
-
+import sqlite3
+from werkzeug.security import generate_password_hash,check_password_hash
 userbp = Blueprint("user",__name__)
 
 
@@ -31,7 +32,22 @@ def login():
             flash(error, category="error")
             return redirect("/login")
         else:
-            return "%s--%s" % (username, password)
+            with sqlite3.connect("demo5.db") as con:
+                cur = con.cursor()
+                # cur.execute("select * from user where username = ? and password = ?",(username,password))
+                cur.execute("select * from user where username = ?",(username,))
+                r = cur.fetchall()
+                print(r)
+                if len(r) <= 0:
+                    flash("用户名错误")
+                    return redirect("/login")
+                else:
+                    securityPassword = r[0][2]
+                    if not check_password_hash(securityPassword,password):
+                        flash("密码错误")
+                        return redirect("/login")
+                    else:
+                        return "%s--%s" % (username, password)
 
 
 
@@ -44,7 +60,6 @@ def regist():
         username = request.form.get("username")
         password = request.form.get("password")
         password2 = request.form.get("password2")
-
         error = None
         if not username:
             error = "用户名不能为空"
@@ -58,4 +73,20 @@ def regist():
             flash(error)
             return redirect("/regist")
         else:
-            return "提取注册参数,注册成功"
+            with sqlite3.connect("demo5.db") as con:
+                cur = con.cursor()
+                cur.execute("select * from user where username = ?", (username,))
+                r = cur.fetchall()
+                if len(r) > 0:
+                    flash("用户已存在")
+                    return redirect("/regist")
+                else:
+                    securityPassword = generate_password_hash(password)
+                    cur.execute("insert into user (username, password) values (?,?) ", (username, securityPassword))
+                    con.commit()
+                    return "提取注册参数,注册成功"
+
+
+
+
+
