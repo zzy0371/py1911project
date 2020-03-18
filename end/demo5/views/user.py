@@ -1,6 +1,8 @@
-from flask import Blueprint,request,redirect,render_template,flash
+from flask import Blueprint,request,redirect,render_template,flash,current_app
 import sqlite3
 from werkzeug.security import generate_password_hash,check_password_hash
+from itsdangerous import TimedJSONWebSignatureSerializer,BadSignature,SignatureExpired
+
 userbp = Blueprint("user",__name__)
 
 
@@ -92,33 +94,52 @@ def regist():
                         from flask_mail import Message
                         from .utils import mail
 
-                        msg = Message(subject="老张大讲堂激活邮件", recipients=[email])
-                        msg.html = "  <a href='http://127.0.0.1:5000/active/8' >  点击激活  </a> "
-                        mail.send(msg)
-
                         securityPassword = generate_password_hash(password)
                         cur.execute("insert into user (email, password) values (?,?) ", (email, securityPassword))
 
+                        cur.execute("select id from user where email = ?",(email,))
 
+                        userid = cur.fetchone()[0]
+                        print(userid)
 
+                        serUtil = TimedJSONWebSignatureSerializer(current_app.secret_key,expires_in=24*60*60)
+                        serstr = serUtil.dumps({"userid":userid}).decode("utf-8")
+
+                        msg = Message(subject="老张大讲堂激活邮件", recipients=[email])
+                        msg.html = "  <a href='http://127.0.0.1:5000/active/%s' >  点击激活  </a> "%(serstr,)
+                        mail.send(msg)
+
+                        # 以上代码都没有错误才进行提交
                         con.commit()
 
 
                         return "提取注册参数,注册成功"
                     except Exception as e:
                         print(e)
+                        con.rollback()
                         return "出异常了"
 
 
 
 
-@userbp.route("/active/8")
-def activeuser():
-    with sqlite3.connect("demo5.db") as con:
-        cur = con.cursor()
-        cur.execute("update user set is_active = 1 where id = ?",(7,))
-        con.commit()
-    return redirect("/login")
+@userbp.route("/active/<userid>")
+def activeuser(userid):
+    try:
+        serUtil = TimedJSONWebSignatureSerializer(current_app.secret_key,expires_in=24*60*60)
+        userid = serUtil.loads(userid)["userid"]
+        with sqlite3.connect("demo5.db") as con:
+            cur = con.cursor()
+            cur.execute("update user set is_active = 1 where id = ?", (userid,))
+            con.commit()
+        return redirect("/login")
+    except SignatureExpired:
+        return "超时了"
+    except BadSignature:
+        return "秘钥错误"
+    except Exception:
+        return "位置原因导致激活失败"
+
+
 
 
 
