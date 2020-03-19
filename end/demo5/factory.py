@@ -52,11 +52,13 @@ def create_app():
 
     app.config["MAIL_SERVER"] = "smtp.163.com"
     app.config["MAIL_PORT"] = 25
-    app.config["MAIL_USERNAME"] = "18137128152@163.com"
-    app.config["MAIL_PASSWORD"] = "qikuedu"
-    app.config['MAIL_DEFAULT_SENDER'] = '老张大讲堂<18137128152@163.com>'
+    app.config["MAIL_USERNAME"] = "henanqikuedu@163.com"
+    app.config["MAIL_PASSWORD"] = "PTNJINCPBWJZUIFF"
+    app.config['MAIL_DEFAULT_SENDER'] = '老张大讲堂<henanqikuedu@163.com>'
 
     # 扩展工厂   关联邮件
     mail.init_app(app)
+
+
 
     return app

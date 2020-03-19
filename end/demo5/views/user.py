@@ -105,12 +105,14 @@ def regist():
                         serUtil = TimedJSONWebSignatureSerializer(current_app.secret_key,expires_in=24*60*60)
                         serstr = serUtil.dumps({"userid":userid}).decode("utf-8")
 
-                        msg = Message(subject="老张大讲堂激活邮件", recipients=[email])
-                        msg.html = "  <a href='http://127.0.0.1:5000/active/%s' >  点击激活  </a> "%(serstr,)
-                        mail.send(msg)
+                        # from tasks import sendmail
+                        print("+++")
+                        from celery_app import send_mail_async
+                        send_mail_async.delay("老张大讲堂激活邮件", email,
+                                              "  <a href='http://127.0.0.1:5000/active/%s' >  点击激活  </a> " % (serstr,))
 
                         # 以上代码都没有错误才进行提交
-                        con.commit()
+                        # con.commit()
 
 
                         return "提取注册参数,注册成功"
