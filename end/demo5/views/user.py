@@ -106,7 +106,6 @@ def regist():
                         serstr = serUtil.dumps({"userid":userid}).decode("utf-8")
 
                         # from tasks import sendmail
-                        print("+++")
                         from celery_app import send_mail_async
                         send_mail_async.delay("老张大讲堂激活邮件", email,
                                               "  <a href='http://127.0.0.1:5000/active/%s' >  点击激活  </a> " % (serstr,))
