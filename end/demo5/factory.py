@@ -4,6 +4,7 @@ Flask - 应用工厂
 # 1 引入Flask
 from flask import Flask,request,render_template,flash,redirect
 from views import *
+from models import *
 
 def create_app():
     """
@@ -59,6 +60,12 @@ def create_app():
     # 扩展工厂   关联邮件
     mail.init_app(app)
 
+    # 配置数据库
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///demo5.db'
+    # 自动检测更新
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+    db.init_app(app)
+    db.app=app
 
     return app
